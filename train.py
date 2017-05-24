@@ -1,5 +1,8 @@
 import tensorflow as tf
+from began import encoder, decoder
+from layers import l1_norm
 import numpy as np
+from config import Config as conf
 
 def generate_noise_batch(size):
 	pass
