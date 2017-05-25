@@ -18,7 +18,9 @@ class Config:
 	lr = 5e-5
 
 	sample_location = "../samples"
-	num_samples = 20
+	num_samples = 25
+	num_rows = 5 # for the tiling in sampling
+	num_cols = 5
 
 	num_epoch = 1000
 	sample_epoch = 5 # generate samples every 5 epochs
