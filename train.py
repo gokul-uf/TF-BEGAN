@@ -12,17 +12,15 @@ def get_noise_batch(size = [conf.batch_size, conf.embedding_dim]):
 
 def get_img_batch(img_ids, loc = conf.data_location, img_shape = (conf.img_height, conf.img_width)):
 	assert len(img_ids) == conf.batch_size
-	img_batch = []
-	for img_id in img_ids:
+	img_batch = np.zeros((conf.batch_size, conf.img_height, conf.img_width))
+	for i, img_id in enumerate(img_ids):
 		img_file = "{}.jpg".format(str(img_id).zfill(6)) # CelebA images are numbered 000001, 000002...
 		img = Image.open(conf.data_location + "/" + img_file)
 		img = img.resize((conf.img_width, conf.img_height)) # resize to 64x64
 		img_data = np.asarray(img, np.float32)
-		img_batch.append(img_data)
-	img_batch = np.asarray(img_batch, dtype = np.float32)
+		img_batch[i] = img_data
 	assert img_batch.shape == (conf.batch_size, conf.img_height, conf.img_width, conf.num_channel)
 	return (img_batch - 127.) / 127.
-
 
 if __name__ == '__main__':
 
