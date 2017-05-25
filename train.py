@@ -5,11 +5,12 @@ import numpy as np
 from config import Config as conf
 from tqdm import tqdm
 from PIL import Image
+import os
 
 def get_noise_batch(size = [conf.batch_size, conf.embedding_dim]):
 	return np.random.uniform(low = conf.z_low_limit, high = conf.z_high_limit, size = size)
 
-	def get_img_batch(img_ids, loc = conf.data_location, img_shape = (conf.img_height, conf.img_width)):
+def get_img_batch(img_ids, loc = conf.data_location, img_shape = (conf.img_height, conf.img_width)):
 	assert len(img_ids) == conf.batch_size
 	img_batch = []
 	for img_id in img_ids:
@@ -51,6 +52,10 @@ if __name__ == '__main__':
 	d_train = tf.train.AdamOptimizer(learning_rate = conf.lr).minimize(l_d)
 	g_train = tf.train.AdamOptimizer(learning_rate = conf.lr).minimize(l_g)
 
+	if not os.path.exists(conf.sample_location):
+		os.makedirs(conf.sample_location)
+
+
 	with tf.Session() as sess:
 		sess.run(tf.global_variables_initializer())
 		k_t_input = conf.k_0
@@ -81,4 +86,13 @@ if __name__ == '__main__':
 
 			if i % conf.sample_epoch == 0:
 				print "Sampling Images"
-				sample_noise = get_noise_batch()
+				sample_noise = get_noise_batch(size = [conf.num_samples, conf.embedding_dim])
+				gen_images = sess.run(gen_image_z_d, feed_dict = {z_d: sample_noise})
+				assert gen_images.shape == (conf.num_samples, conf.img_height, conf.img_width)
+				gen_images = [Image.fromarray(gen_images[i]) for i in range(conf.num_samples)]
+				sample_images = Image.new("RGB", (conf.num_cols*conf.img_width, conf.num_rows*conf.img_height))
+				for row in range(conf.num_rows):
+					for col in range(conf.num_cols):
+						idx = row*conf.num_cols + col
+						sample_images.paste(gen_images[idx], (col*conf.img_width, row*conf.img_height))
+				sample_images.save(conf.sample_location + "/" + "epoch_{}.jpg".format(i))
