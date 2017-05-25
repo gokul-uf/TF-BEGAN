@@ -78,10 +78,13 @@ if __name__ == '__main__':
 				g_loss.append(batch_g_loss)
 				epoch_l_x.append(batch_l_x)
 				epoch_l_g_g.append(batch_l_g_g)
-			print("Epoch : {}".format(i+1))
-			print("G Loss: {}, D Loss: {}".format(np.mean(g_loss), np.mean(d_loss)))
 			epoch_l_x = np.mean(epoch_l_x)
 			epoch_l_g_g = np.mean(epoch_l_g_g)
+			g_loss = np.mean(g_loss)
+			d_loss = np.mean(d_loss)
+			M_global = epoch_l_x + abs(conf.gamma * epoch_l_x - epoch_l_g_g)
+			print("Epoch : {}".format(i+1))
+			print("M_global: {}, G Loss: {}, D Loss: {}".format(M_global, g_loss, d_loss))
 			k_t_input += conf.lambda_k*(conf.gamma*epoch_l_x - epoch_l_g_g)
 
 			if i % conf.sample_epoch == 0:
