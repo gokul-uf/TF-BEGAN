@@ -20,7 +20,7 @@ def get_img_batch(img_ids, loc = conf.data_location, img_shape = (conf.img_heigh
 		img_data = np.asarray(img, np.float32)
 		img_batch[i] = img_data
 	assert img_batch.shape == (conf.batch_size, conf.img_height, conf.img_width, conf.num_channel)
-	return (img_batch - 127.) / 127.
+	return img_batch
 
 if __name__ == '__main__':
 
@@ -29,10 +29,11 @@ if __name__ == '__main__':
 	input_image     = tf.placeholder(tf.float32, [None, conf.img_height, conf.img_width,
 									 conf.num_channel], name = "input_image")
 	k_t 			= tf.placeholder(tf.float32, shape=(), name = "k_t")
+	normalized_input_image = tf.divide( tf.subtract(input_image, 127.0), 127.0)
 
-	enc_orig_image = encoder(input_image, "encoder")
+	enc_orig_image = encoder(normalized_input_image, "encoder")
 	dec_orig_image = decoder(enc_orig_image, "decoder")
-	l_x   = l1_norm(tf.subtract(input_image, dec_orig_image), "l_x")
+	l_x   = l1_norm(tf.subtract(normalized_input_image, dec_orig_image), "l_x")
 
 	gen_image_z_d   = decoder(z_d, "generator")
 	enc_gen_img_z_d = encoder(gen_image_z_d,   "encoder", reuse = True)
