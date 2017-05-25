@@ -55,8 +55,9 @@ if __name__ == '__main__':
 	if not os.path.exists(conf.sample_location):
 		os.makedirs(conf.sample_location)
 
-
-	with tf.Session() as sess:
+	config = tf.ConfigProto()
+	config.gpu_options.allow_growth = True
+	with tf.Session(config = config) as sess:
 		sess.run(tf.global_variables_initializer())
 		k_t_input = conf.k_0
 		for i in range(conf.num_epoch):
