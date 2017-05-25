@@ -88,7 +88,7 @@ if __name__ == '__main__':
 				print("Sampling Images")
 				sample_noise = get_noise_batch(size = [conf.num_samples, conf.embedding_dim])
 				gen_images = sess.run(gen_image_z_d, feed_dict = {z_d: sample_noise})
-				assert gen_images.shape == (conf.num_samples, conf.img_height, conf.img_width)
+				assert gen_images.shape == (conf.num_samples, conf.img_height, conf.img_width, conf.num_channel)
 				gen_images = [Image.fromarray(gen_images[i]) for i in range(conf.num_samples)]
 				sample_images = Image.new("RGB", (conf.num_cols*conf.img_width, conf.num_rows*conf.img_height))
 				for row in range(conf.num_rows):
