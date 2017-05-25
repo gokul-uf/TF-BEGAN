@@ -7,7 +7,7 @@ from config import Config as conf
 def decoder(input, name, reuse = False):
 	with tf.variable_scope(name, reuse = reuse) as scope:
 		fc_op = fully_connected(input, num_output = 8*8*conf.n, name = "fc")
-		reshape_op = tf.reshape(fc_op, [conf.batch_size, 8, 8, conf.n])
+		reshape_op = tf.reshape(fc_op, [None, 8, 8, conf.n])
 		
 		conv_1 = conv2d(input = reshape_op, filter_shape = [3, 3, conf.n, conf.n], name = "conv_1")
 		conv_2 = conv2d(input = conv_1,     filter_shape = [3, 3, conf.n, conf.n], name = "conv_2")
@@ -45,7 +45,7 @@ def encoder(input, name, reuse = False):
 
 		conv_7 = conv2d(input = subs_3, filter_shape = [3, 3, 4*conf.n, 4*conf.n], name = "conv_7")
 		conv_8 = conv2d(input = conv_7, filter_shape = [3, 3, 4*conf.n, 4*conf.n], name = "conv_8")
-		reshape_op = tf.reshape(conv_8 ,[conf.batch_size, 8*8*4*conf.n])
+		reshape_op = tf.reshape(conv_8 ,[None, 8*8*4*conf.n])
 		fc_op = fully_connected(reshape_op, num_output = conf.embedding_dim, name = "fc")
 
 		return fc_op

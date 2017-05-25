@@ -25,10 +25,10 @@ def get_noise_batch(size = [conf.batch_size, conf.embedding_dim]):
 
 if __name__ == '__main__':
 
-	z_d 			= tf.placeholder(tf.float32, [conf.batch_size, conf.embedding_dim], name = "z_d")
-	z_g 			= tf.placeholder(tf.float32, [conf.batch_size, conf.embedding_dim], name = "z_g")
-	input_image     = tf.placeholder(tf.float32, [conf.batch_size, conf.img_height, 
-												  conf.img_width, conf.num_channel], name = "input_image")
+	z_d 			= tf.placeholder(tf.float32, [None, conf.embedding_dim], name = "z_d")
+	z_g 			= tf.placeholder(tf.float32, [None, conf.embedding_dim], name = "z_g")
+	input_image     = tf.placeholder(tf.float32, [None, conf.img_height, conf.img_width,
+									 conf.num_channel], name = "input_image")
 	k_t 			= tf.placeholder(tf.float32, shape=(), name = "k_t")
 
 	enc_orig_image = encoder(input_image, "encoder")
