@@ -72,7 +72,7 @@ if __name__ == '__main__':
 				z_d_batch = get_noise_batch()
 				feed_dict = {z_d : z_d_batch, z_g : z_g_batch,
 							 input_image : img_batch, k_t: k_t_input}
-				batch_d_loss, batch_g_loss, batch_l_x, batch_l_g_g = sess.run([d_train, g_train, l_x, l_g_g],
+				_, _, batch_d_loss, batch_g_loss, batch_l_x, batch_l_g_g = sess.run([d_train, g_train, l_d, l_g, l_x, l_g_g],
 																				feed_dict = feed_dict)
 				d_loss.append(batch_d_loss)
 				g_loss.append(batch_g_loss)
