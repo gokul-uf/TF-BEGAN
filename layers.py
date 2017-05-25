@@ -21,4 +21,4 @@ def conv2d(input, filter_shape, strides = (1,1,1,1), activation = tf.nn.elu, pad
 def l1_norm(input, name):
 	# takes a batch of n-dimensional tensor and returns a 2D tensor of l1 norms
 	with tf.variable_scope(name) as scope:
-		return tf.reduce_sum(tf.abs(input), axis = range(1, len(input.shape)))
+		return tf.reduce_sum(tf.abs(input), axis = list(range(1, len(input.shape))))

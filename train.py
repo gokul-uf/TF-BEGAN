@@ -64,7 +64,7 @@ if __name__ == '__main__':
 			g_loss = []
 			epoch_l_x = [] # To update k_t
 			epoch_l_g_g = [] # To update k_t
-			all_images = range(1, conf.dataset_size + 1)
+			all_images = list(range(1, conf.dataset_size + 1))
 			np.random.shuffle(all_images)
 			for j in tqdm(range(0, conf.batch_size * (conf.dataset_size // conf.batch_size), conf.batch_size)):
 				img_batch = get_img_batch(all_images[j : j + conf.batch_size])
