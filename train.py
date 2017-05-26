@@ -86,6 +86,7 @@ if __name__ == '__main__':
 			print("Epoch : {}".format(i+1))
 			print("M_global: {}, G Loss: {}, D Loss: {}".format(M_global, g_loss, d_loss))
 			k_t_input += conf.lambda_k*(conf.gamma*epoch_l_x - epoch_l_g_g)
+			k_t_input = max(min(1, k_t_input), 0) # to ensure 0 <= k_t_input <= 1
 
 			if i % conf.sample_epoch == 0:
 				print("Sampling Images")
